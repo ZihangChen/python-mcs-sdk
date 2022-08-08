@@ -9,8 +9,8 @@ from email.utils import formataddr
 from mcs.api import McsAPI
 from mcs.contract import ContractAPI
 
-mail_user = 'zhchen@nbai.io'
-mail_pass = '17681768asA'
+mail_user = ''
+mail_pass = ''
 mail_host = "smtp.office365.com"
 sender = ''
 
