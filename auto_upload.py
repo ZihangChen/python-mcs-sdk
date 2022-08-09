@@ -1,5 +1,6 @@
 import os
 import time
+from configparser import ConfigParser
 
 import smtplib
 from email.header import Header
@@ -9,27 +10,30 @@ from email.utils import formataddr
 from mcs.api import McsAPI
 from mcs.contract import ContractAPI
 
-mail_user = ''
-mail_pass = ''
-mail_host = "smtp.office365.com"
-sender = ''
-
 class AutoUpload():
     
-    def __init__(self, wallet_address, private_key, rpc_url, file_path, email_address=None):
+    def __init__(self, wallet_address, private_key, web3_api, file_path, email_address=None):
         self.wallet_address = wallet_address
         self.private_key = private_key
-        self.web3_api = rpc_url
+        self.web3_api = web3_api
         
         self.file_path = file_path
         self.file_name = os.path.basename(self.file_path)
 
         self.email_address = email_address
 
+        with ConfigParser() as conf:
+            conf.read('config.ini')
+            self.mail_user = conf['MailInfo']['user']
+            self.mail_pass = conf['MailInfo']['password']
+            self.mail_host = conf['MailInfo']['host']
+            self.sender = conf['MailInfo']['sender']
+
+
     def auto_upload(self):
-        file_status = self.upload_pay()
-        self.check_detail_status()
-        return
+        self.upload_pay()
+        status = self.check_detail_status()
+        return status
 
     def upload_pay(self):
         w3_api = ContractAPI(self.web3_api)
@@ -46,7 +50,6 @@ class AutoUpload():
 
         # payment
         w3_api.upload_file_pay(self.wallet_address, self.private_key, file_size, w_cid, rate, params)
-        return
 
     def check_detail_status(self):
         api = McsAPI()
@@ -70,11 +73,11 @@ class AutoUpload():
         receiver = self.email_address
 
         message = MIMEText(msg, 'html', 'utf-8')
-        message['From'] = formataddr(('Swan', sender))
+        message['From'] = formataddr(('Swan', self.sender))
         message['To'] = receiver
         message['Subject'] = Header(sub, 'utf-8')
-        with smtplib.SMTP(mail_host, 587) as server:
+        with smtplib.SMTP(self.mail_host, 587) as server:
             server.starttls()
             server.ehlo()
-            server.login(mail_user, mail_pass)
-            server.sendmail(sender, receiver, message.as_string())
+            server.login(self.mail_user, self.mail_pass)
+            server.sendmail(self.sender, receiver, message.as_string())
