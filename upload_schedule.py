@@ -1,16 +1,14 @@
 from apscheduler.schedulers.background import BackgroundScheduler
 from auto_upload import AutoUpload
-from configparser import ConfigParser
+import toml
 
 def daily_upload():
-    with ConfigParser() as conf:
-            conf.read('config.ini')
-            wallet_address = conf['WalletInfo']['wallet_address']
-            private_key = conf['WalletInfo']['private_key']
-            web3_api = conf['WalletInfo']['web3_api']
-            file_path = conf['FileInfo']['file_path']
-            email_address = conf['MailInfo']['receiver']
-    up = AutoUpload(wallet_address, private_key, web3_api, file_path, email_address)
+    config = toml.load("config.toml")
+    wallet_address = config['WalletInfo']['wallet_address']
+    private_key = config['WalletInfo']['private_key']
+    web3_api = config['WalletInfo']['web3_api']
+    file_path = config['FileInfo']['file_path']
+    up = AutoUpload(wallet_address, private_key, web3_api, file_path)
     up.auto_upload()
 
 scheduler = BackgroundScheduler

@@ -7,8 +7,6 @@ web3_api = ''
 user = ''
 password = ''
 host = ''
-sender = ''
-receiver = ''
 
 [FileInfo]
 file_path = ''
