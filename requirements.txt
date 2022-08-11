@@ -1,2 +1,4 @@
 pytest
 web3
+requests
+requests-toolbelt
