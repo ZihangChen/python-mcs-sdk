@@ -52,14 +52,14 @@ class AutoUpload():
 
         start_time = time.time()
         current_time = time.time()
-        while current_time-start_time > 43200:
+        while current_time-start_time < 43200:
             task_detail = api.get_user_tasks_deals(self.wallet_address, self.file_name)
             deal = task_detail['data']['source_file_upload'][0]
             source_file_upload_id = deal['source_file_upload_id']
             if deal['offline_deal']:
                 deal_id = deal['offline_deal'][0]['deal_id']
                 deal_status = api.get_deal_detail(self.wallet_address, source_file_upload_id, str(deal_id))
-                if deal_status['data']['source_file_upload_dea']['verified_deal']:
+                if deal_status['data']['source_file_upload_dea']['unlocked']:
                     self.notification_email(sub='MCS', msg='Upload sucessfully')
                     return True
             time.sleep(1800)
