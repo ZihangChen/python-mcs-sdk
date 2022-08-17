@@ -6,9 +6,9 @@ from mcs.contract import ContractAPI
 @pytest.fixture
 def info():
     wallet_info = {
-        'wallet_address' : "0x61c3e03dbed55f5DE213732e816F8A8Fd6E9bfF0",
-        'private_key' : "9b7b90e22f0ac48611e4c9e9a09b008c013780a8bb28e213b60e5ad15953258c",
-        'web3_api' : "https://rpc-mumbai.maticvigil.com",
+        'wallet_address' : "",
+        'private_key' : "",
+        'web3_api' : "",
     }
     return wallet_info
 
