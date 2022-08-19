@@ -10,3 +10,7 @@ host = ''
 
 [FileInfo]
 file_path = ''
+
+[Time]
+hour = ''
+minute = ''

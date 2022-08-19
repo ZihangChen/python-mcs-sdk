@@ -26,8 +26,13 @@ class AutoUpload():
         self.mail_host = config['MailInfo']['host']
 
     def auto_upload(self):
-        self.upload_pay()
+        try:
+            self.upload_pay()
+        except Exception as e:
+            self.notification_email(sub='MCS', msg='Upload erro \n' + e)
+        
         status = self.check_detail_status()
+
         return status
 
     def upload_pay(self):
@@ -59,11 +64,12 @@ class AutoUpload():
             if deal['offline_deal']:
                 deal_id = deal['offline_deal'][0]['deal_id']
                 deal_status = api.get_deal_detail(self.wallet_address, source_file_upload_id, str(deal_id))
-                if deal_status['data']['source_file_upload_dea']['unlocked']:
-                    self.notification_email(sub='MCS', msg='Upload sucessfully')
+                if deal_status['data']['source_file_upload_deal']['unlocked']:
+                    self.notification_email(sub='MCS', msg='Unlock successful')
                     return True
             time.sleep(1800)
-        self.notification_email(sub='MCS', msg='Upload unsucessful')
+            current_time = time.time()
+        self.notification_email(sub='MCS', msg='Unlock unsucessful')
         return False
             
     def notification_email(self, sub, msg):
