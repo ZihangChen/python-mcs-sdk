@@ -3,12 +3,12 @@ from mcs.api import McsAPI
 
 
 class Params:
-    def __init__(self, chain_name='polygon.mainnet'):
+    def __init__(self, chain_name='bsc.testnet'):
         if chain_name == 'polygon.mainnet' or chain_name == 'main':
             self.MCS_API = MCS_POLYGON_MAIN_API
         elif chain_name == 'mumbai':
             self.MCS_API = MCS_POLYGON_MUMBAI_API
-        elif chain_name == 'bsc':
+        elif chain_name == 'bsc.testnet':
             self.MCS_API = MCS_BSC_API
         else:
             return 'unknown chain name'
