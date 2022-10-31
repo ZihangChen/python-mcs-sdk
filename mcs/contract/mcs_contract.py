@@ -27,6 +27,7 @@ class ContractAPI(ApiClient):
             return
         tx = token.functions.approve(self.SWAN_PAYMENT_ADDRESS, amount).buildTransaction({
             'from': wallet_address,
+            'gasPrice': self.w3.toWei('10', 'gWei'),
             'nonce': nonce
         })
         signed_tx = self.w3.eth.account.signTransaction(tx, private_key)
@@ -53,6 +54,7 @@ class ContractAPI(ApiClient):
         }
         options_obj = {
             'from': wallet_address,
+            'gasPrice': self.w3.toWei('10', 'gWei'),
             'nonce': nonce
         }
         tx = swan_payment.functions.lockTokenPayment(lock_obj).buildTransaction(options_obj)
@@ -67,13 +69,12 @@ class ContractAPI(ApiClient):
         mint_contract = self.w3.eth.contract(self.MINT_ADDRESS, abi=mint_abi)
         option_obj = {
             'from': wallet_address,
+            'gasPrice': self.w3.toWei('10', 'gWei'),
             'nonce': nonce
         }
-        tx = mint_contract.functions.mintUnique(wallet_address, str(nft_meta_uri)).buildTransaction(option_obj)
+        tx = mint_contract.functions.mintData(wallet_address, str(nft_meta_uri)).buildTransaction(option_obj)
         signed_tx = self.w3.eth.account.signTransaction(tx, private_key)
         tx_hash = self.w3.eth.sendRawTransaction(signed_tx.rawTransaction)
-        receipt = self.w3.eth.wait_for_transaction_receipt(tx_hash, timeout=CONTRACT_TIME_OUT)
-        result = mint_contract.events.TransferSingle().processReceipt(receipt)
-        id = result[0]['args']['id']
-        token_id = int(id)
+        token_id = mint_contract.functions.totalSupply().call()
+        self.w3.eth.wait_for_transaction_receipt(tx_hash, timeout=CONTRACT_TIME_OUT)
         return self.w3.toHex(tx_hash), token_id

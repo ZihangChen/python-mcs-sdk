@@ -8,11 +8,11 @@ from mcs.common.params import Params
 from mcs.contract import ContractAPI
 from mcs.common.utils import get_amount
 
-chain_name = "main"
+chain_name = "bsc.testnet"
 
 
 def test_info():
-    load_dotenv(".env_" + chain_name)
+    load_dotenv(".env_main")
     wallet_info = {
         'wallet_address': os.getenv('wallet_address'),
         'private_key': os.getenv('private_key'),
@@ -38,7 +38,7 @@ def test_upload_file_pay():
 
     w3_api = ContractAPI(rpc_endpoint, chain_name)
     api = McsAPI(Params(chain_name).MCS_API)
-    api.get_jwt_token(wallet_address,private_key, "polygon.mainnet")
+    api.get_jwt_token(wallet_address,private_key, "bsc.testnet")
     # upload file to mcs
     filepath = "/images/log_mcs.png"
     parent_path = os.path.abspath(os.path.dirname(__file__))
@@ -80,7 +80,7 @@ def test_mint_nft():
 
     w3_api = ContractAPI(rpc_endpoint, chain_name)
     api = McsAPI(Params(chain_name).MCS_API)
-    api.get_jwt_token(wallet_address,private_key, "polygon.mainnet")
+    api.get_jwt_token(wallet_address,private_key, "bsc.testnet")
     w3 = Web3(Web3.HTTPProvider(rpc_endpoint))
 
     # upload file to mcs

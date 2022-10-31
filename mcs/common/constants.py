@@ -5,7 +5,7 @@ REST_API_VERSION = "v1"
 GET = "GET"
 POST = "POST"
 DELETE = "DELETE"
-FIL_PRICE_API = "https://api.filswan.com/stats/storage"
+FIL_PRICE_API = "https://calibration-api.filswan.com/stats/storage"
 # mcs api
 MCS_PARAMS = "/common/system/params"
 PRICE_RATE = "/billing/price/filecoin"
@@ -19,6 +19,6 @@ USER_LOGIN = "/user/login_by_metamask_signature"
 # contract
 USDC_ABI = "ERC20.json"
 SWAN_PAYMENT_ABI = "SwanPayment.json"
-MINT_ABI = "SwanNFT.json"
+MINT_ABI = "Minter.json"
 
 CONTRACT_TIME_OUT = 300
